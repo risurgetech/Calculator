@@ -12,6 +12,46 @@ interface CodeEditorFrameProps {
   setCalculationResults: React.Dispatch<React.SetStateAction<CalculationResult | null>>;
 }
 
+const styles = {
+  container: {
+    backgroundColor: '#2d2d2d',
+    borderRadius: '8px',
+    padding: '20px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+  },
+  editor: {
+    backgroundColor: '#1e1e1e',
+    color: '#e0e0e0',
+    padding: '15px',
+    borderRadius: '4px',
+    fontFamily: 'monospace',
+    border: '1px solid #404040'
+  },
+  results: {
+    backgroundColor: '#2d2d2d',
+    padding: '15px',
+    borderRadius: '4px',
+    marginTop: '20px'
+  },
+  currentValues: {
+    backgroundColor: '#363636',
+    padding: '10px',
+    borderRadius: '4px',
+    marginBottom: '15px'
+  },
+  calculateButton: {
+    backgroundColor: '#2ea043',
+    color: 'white',
+    border: 'none',
+    padding: '8px 16px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#3fb950'
+    }
+  }
+};
+
 export default function CodeEditorFrame({
   code,
   setCode,
@@ -55,27 +95,28 @@ export default function CodeEditorFrame({
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div style={styles.container} className="h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Code Editor</h2>
+        <h2 className="text-lg font-semibold text-white">Code Editor</h2>
         <button
           onClick={executeCode}
-          className="flex items-center gap-1 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          style={styles.calculateButton}
+          className="flex items-center gap-1"
         >
           <Play size={16} /> Calculate
         </button>
       </div>
 
-      <div className="bg-gray-100 p-2 mb-4 rounded">
-        <h3 className="text-sm font-medium mb-2">Current Values:</h3>
+      <div style={styles.currentValues}>
+        <h3 className="text-sm font-medium mb-2 text-gray-300">Current Values:</h3>
         <div className="flex gap-2 flex-wrap">
           {variables.map((variable, index) => (
-            <div key={index} className="bg-blue-100 px-2 py-1 rounded text-sm">
+            <div key={index} className="bg-blue-900/20 px-2 py-0.5 rounded text-xs text-gray-200">
               {variable.name}: {variable.values[selectedRowIndex] || '0'}
             </div>
           ))}
           {discounts.map((discount, index) => (
-            <div key={index} className="bg-green-100 px-2 py-1 rounded text-sm">
+            <div key={index} className="bg-green-900/20 px-2 py-0.5 rounded text-xs text-gray-200">
               {discount.name}: {discount.value}%
             </div>
           ))}
@@ -85,24 +126,25 @@ export default function CodeEditorFrame({
       <textarea
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        className="flex-grow p-4 font-mono text-sm border rounded bg-gray-50"
+        style={styles.editor}
+        className="flex-grow p-4 font-mono text-sm"
         spellCheck={false}
       />
 
       {calculationResults && (
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h3 className="text-lg font-semibold mb-2">Results:</h3>
+        <div style={styles.results}>
+          <h3 className="text-lg font-semibold mb-2 text-white">Results:</h3>
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white p-3 rounded shadow">
-              <div className="text-sm text-gray-600">Margin %</div>
-              <div className="text-xl font-semibold">
+            <div className="bg-gray-800 p-3 rounded">
+              <div className="text-sm text-gray-400">Margin %</div>
+              <div className="text-xl font-semibold text-white">
                 {calculationResults.marginPercent.toFixed(2)}%
               </div>
             </div>
-            <div className="bg-white p-3 rounded shadow">
-              <div className="text-sm text-gray-600">Margin Amount</div>
-              <div className="text-xl font-semibold">
-                ${calculationResults.marginAmount.toFixed(2)}
+            <div className="bg-gray-800 p-3 rounded">
+              <div className="text-sm text-gray-400">Margin Amount</div>
+              <div className="text-xl font-semibold text-white">
+                ₹ {calculationResults.marginAmount.toFixed(2)}
               </div>
             </div>
           </div>
