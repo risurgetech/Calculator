@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play } from 'lucide-react';
+import Editor from "@monaco-editor/react";
 import type { Discount, Variable, CalculationResult } from '../App';
 
 interface CodeEditorFrameProps {
@@ -14,18 +15,15 @@ interface CodeEditorFrameProps {
 
 const styles = {
   container: {
-    backgroundColor: '#2d2d2d',
-    borderRadius: '8px',
-    padding: '20px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column' as const,
   },
   editor: {
-    backgroundColor: '#1e1e1e',
-    color: '#e0e0e0',
-    padding: '15px',
+    flex: '1 1 0%',
+    minHeight: '0',
+    border: '1px solid #404040',
     borderRadius: '4px',
-    fontFamily: 'monospace',
-    border: '1px solid #404040'
   },
   results: {
     backgroundColor: '#2d2d2d',
@@ -95,7 +93,7 @@ export default function CodeEditorFrame({
   };
 
   return (
-    <div style={styles.container} className="h-full flex flex-col">
+    <div style={styles.container}>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-white">Code Editor</h2>
         <button
@@ -123,13 +121,24 @@ export default function CodeEditorFrame({
         </div>
       </div>
 
-      <textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        style={styles.editor}
-        className="flex-grow p-4 font-mono text-sm"
-        spellCheck={false}
-      />
+      <div style={styles.editor}>
+        <Editor
+          height="100%"
+          defaultLanguage="javascript"
+          theme="vs-dark"
+          value={code}
+          onChange={(value) => setCode(value || '')}
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
+            lineNumbers: 'on',
+            roundedSelection: false,
+            scrollBeyondLastLine: false,
+            readOnly: false,
+            automaticLayout: true,
+          }}
+        />
+      </div>
 
       {calculationResults && (
         <div style={styles.results}>
