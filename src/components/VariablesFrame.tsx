@@ -101,17 +101,11 @@ export default function VariablesFrame({
   const maxRows = variables[0]?.values.length || 0;
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="flex-1 flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-white">Variables</h2>
         <div className="flex gap-2">
-          <button
-            onClick={addColumn}
-            style={styles.button}
-            className="flex items-center gap-1"
-          >
-            <Plus size={16} /> Add Column
-          </button>
+          
           <button
             onClick={addRow}
             style={styles.button}
@@ -122,13 +116,12 @@ export default function VariablesFrame({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-y-auto flex-1">
         <table className="w-full border-collapse">
-          <thead>
-            <tr>
-              <th className="border border-gray-600 p-2"></th>
-              {variables.map((variable, columnIndex) => (
-                <th key={columnIndex} className="border border-gray-600 p-2">
+          <tbody>
+            {variables.map((variable, columnIndex) => (
+              <tr key={columnIndex}>
+                <th className="border border-gray-600 p-2 bg-[#2d2d2d]">
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -136,49 +129,37 @@ export default function VariablesFrame({
                       onChange={(e) => updateColumnName(columnIndex, e.target.value)}
                       style={styles.input}
                     />
-                    <button
-                      onClick={() => removeColumn(columnIndex)}
-                      style={styles.deleteButton}
-                    >
-                      <X size={16} />
-                    </button>
                   </div>
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array(maxRows)].map((_, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={`${
-                  selectedRowIndex === rowIndex ? 'bg-blue-900/20' : ''
-                } hover:bg-gray-800/50 cursor-pointer`}
-                onClick={() => setSelectedRowIndex(rowIndex)}
-              >
-                <td className="border border-gray-600 p-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeRow(rowIndex);
-                    }}
-                    style={styles.deleteButton}
+                {[...Array(maxRows)].map((_, rowIndex) => (
+                  <td 
+                    key={rowIndex} 
+                    className={`border border-gray-600 p-2 ${
+                      selectedRowIndex === rowIndex ? 'bg-blue-900/20' : ''
+                    }`}
+                    onClick={() => setSelectedRowIndex(rowIndex)}
                   >
-                    <X size={16} />
-                  </button>
-                </td>
-                {variables.map((variable, columnIndex) => (
-                  <td key={columnIndex} className="border border-gray-600 p-2">
-                    <input
-                      type="text"
-                      value={variable.values[rowIndex] || ''}
-                      onChange={(e) =>
-                        updateValue(columnIndex, rowIndex, e.target.value)
-                      }
-                      style={styles.input}
-                      className="w-full"
-                      onClick={(e) => e.stopPropagation()}
-                    />
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={variable.values[rowIndex] || ''}
+                        onChange={(e) => updateValue(columnIndex, rowIndex, e.target.value)}
+                        style={styles.input}
+                        className="w-full"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      {columnIndex === 0 && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeRow(rowIndex);
+                          }}
+                          style={styles.deleteButton}
+                        >
+                          <X size={16} />
+                        </button>
+                      )}
+                    </div>
                   </td>
                 ))}
               </tr>

@@ -67,7 +67,7 @@ export default function DiscountFrame({ discounts, setDiscounts }: DiscountFrame
   };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="flex-1 flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-white">Discounts</h2>
         <button
@@ -79,34 +79,39 @@ export default function DiscountFrame({ discounts, setDiscounts }: DiscountFrame
         </button>
       </div>
       
-      <div className="flex gap-4 overflow-x-auto">
-        {discounts.map((discount, index) => (
-          <div key={index} className="flex flex-col min-w-[200px]">
-            <div className="flex justify-between items-center mb-2">
-              <input
-                type="text"
-                value={discount.name}
-                onChange={(e) => updateDiscount(index, 'name', e.target.value)}
-                style={styles.input}
-                className="w-full mr-2"
-                placeholder="Name"
-              />
-              <button
-                onClick={() => removeDiscount(index)}
-                style={styles.removeButton}
-              >
-                <X size={16} />
-              </button>
-            </div>
-            <input
-              type="number"
-              value={discount.value}
-              onChange={(e) => updateDiscount(index, 'value', e.target.value)}
-              style={styles.input}
-              placeholder="Value"
-            />
-          </div>
-        ))}
+      <div className="overflow-y-auto flex-1">
+        <table className="w-full border-collapse">
+          <tbody>
+            <tr>
+              <th className="border border-gray-600 p-2 bg-[#2d2d2d]">Name</th>
+              <th className="border border-gray-600 p-2 bg-[#2d2d2d]">Value</th>
+            </tr>
+            {discounts.map((discount, index) => (
+              <tr key={index}>
+                <td className="border border-gray-600 p-2">
+                  <input
+                    type="text"
+                    value={discount.name}
+                    onChange={(e) => updateDiscount(index, 'name', e.target.value)}
+                    style={styles.input}
+                    className="w-full"
+                    placeholder="Name"
+                  />
+                </td>
+                <td className="border border-gray-600 p-2">
+                  <input
+                    type="number"
+                    value={discount.value}
+                    onChange={(e) => updateDiscount(index, 'value', e.target.value)}
+                    style={styles.input}
+                    className="w-full"
+                    placeholder="Value"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

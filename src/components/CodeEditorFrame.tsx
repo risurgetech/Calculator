@@ -112,7 +112,7 @@ export default function CodeEditorFrame({
         <div className="flex gap-2 flex-wrap">
           {variables.map((variable, index) => (
             <div key={index} className="bg-blue-900/20 px-2 py-0.5 rounded text-xs text-gray-200">
-              {variable.name}: {variable.values[selectedRowIndex] || '0'}
+              {variable.name}: {variable.values[selectedRowIndex]}
             </div>
           ))}
           {discounts.map((discount, index) => (
@@ -138,13 +138,13 @@ export default function CodeEditorFrame({
             <div className="bg-gray-800 p-3 rounded">
               <div className="text-sm text-gray-400">Margin %</div>
               <div className="text-xl font-semibold text-white">
-                {calculationResults.marginPercent.toFixed(2)}%
+                {parseFloat(calculationResults.marginPercent ?? '0').toFixed(2)}%
               </div>
             </div>
             <div className="bg-gray-800 p-3 rounded">
               <div className="text-sm text-gray-400">Margin Amount</div>
               <div className="text-xl font-semibold text-white">
-                ₹ {calculationResults.marginAmount.toFixed(2)}
+                ₹ {parseFloat(calculationResults.marginAmount ?? '0').toFixed(2)}
               </div>
             </div>
           </div>
